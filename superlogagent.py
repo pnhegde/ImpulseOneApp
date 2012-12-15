@@ -27,40 +27,44 @@ def pollAdServer():
   queryList=[]
   for item in MessageList:
     item=json.loads(item)
-    print item
     if item["message"]=="IMP":
       t=item["timestamp_GMT"].split(" ")
       date=t[0]
       time=t[1]
-      if item["exchange"]=="google":
-	price = item["price"]
-	price = price.replace("-","+").replace("_","/")
-	price = price + '=' * (4 - len(price) % 4)
-	dprice=base64.b64decode(price)
-	initvec=dprice[0:16]
-	ciphertext=dprice[16:24]
-	integritysig=dprice[24:28]
-	ekey=base64.b64decode("SwkocWk+H59O8rf3uVAUMXLUfGn6rWiPX/Ua1pXMh/8=")
-	ikey=base64.b64decode("sH7xBkxKKqtQ3lVTpPT/Z8sBqUJAymjCkMA3JGa9lfU=")
-	pad = hmac.new(ekey, initvec, hashlib.sha1).digest()
-	l = [bin(ord(a) ^ ord(b)) for a,b in zip(ciphertext,pad)]
-	k = int("".join("%02x" % int(x,0) for x in l), 16)
-	price = float(k)/float(1000);
+      
+      try:
+	if item["exchange"]=="google":
+	  price = item["price"]
+	  price = price.replace("-","+").replace("_","/")
+	  price = price + '=' * (4 - len(price) % 4)
+	  dprice=base64.b64decode(price)
+	  initvec=dprice[0:16]
+	  ciphertext=dprice[16:24]
+	  integritysig=dprice[24:28]
+	  ekey=base64.b64decode("SwkocWk+H59O8rf3uVAUMXLUfGn6rWiPX/Ua1pXMh/8=")
+	  ikey=base64.b64decode("sH7xBkxKKqtQ3lVTpPT/Z8sBqUJAymjCkMA3JGa9lfU=")
+	  pad = hmac.new(ekey, initvec, hashlib.sha1).digest()
+	  l = [bin(ord(a) ^ ord(b)) for a,b in zip(ciphertext,pad)]
+	  k = int("".join("%02x" % int(x,0) for x in l), 16)
+	  price = float(k)/float(1000);
 
-      if item["exchange"]=="openx":
-	price = item["price"]
-	price = price.replace("-","+").replace("_","/")
-	price = price + '=' * (4 - len(price) % 4)
-	dprice=base64.b64decode(price)
-	initvec=dprice[0:16]
-	ciphertext=dprice[16:24]
-	integritysig=dprice[24:28]
-	ekey=binascii.unhexlify("D71E79EB3E18B519412953A7F300478765F455538495A26D6E5EFD7831FBFC08")
-	ikey=binascii.unhexlify("1976F4578EA971D0D3C577C7C6BE4E2BB2A47E373921A5A87FA221B19E1DBAB7")
-	pad = hmac.new(ekey, initvec, hashlib.sha1).digest()
-	l = [bin(ord(a) ^ ord(b)) for a,b in zip(ciphertext,pad)]
-	k = int("".join("%02x" % int(x,0) for x in l), 16)
-	price = float(k)/float(1000);
+	if item["exchange"]=="openx":
+	  price = item["price"]
+	  price = price.replace("-","+").replace("_","/")
+	  price = price + '=' * (4 - len(price) % 4)
+	  dprice=base64.b64decode(price)
+	  initvec=dprice[0:16]
+	  ciphertext=dprice[16:24]
+	  integritysig=dprice[24:28]
+	  ekey=binascii.unhexlify("D71E79EB3E18B519412953A7F300478765F455538495A26D6E5EFD7831FBFC08")
+	  ikey=binascii.unhexlify("1976F4578EA971D0D3C577C7C6BE4E2BB2A47E373921A5A87FA221B19E1DBAB7")
+	  pad = hmac.new(ekey, initvec, hashlib.sha1).digest()
+	  l = [bin(ord(a) ^ ord(b)) for a,b in zip(ciphertext,pad)]
+	  k = int("".join("%02x" % int(x,0) for x in l), 16)
+	  price = float(k)/float(1000);
+      except:
+	price=float(0)
+	print "exception decoding price"
 	
       if item["exchange"]=="direct":
 	price = item["price"]
