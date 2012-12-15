@@ -24,6 +24,7 @@ for f in FileList:
 
 queryList=[]
 for item in MessageList:
+  print item
   if item["Message"]=="IMP":
     t=item["timestamp_GMT"].split(" ")
     date=t[0]
