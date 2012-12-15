@@ -14,16 +14,21 @@ def pollAdServer():
   conn = httplib.HTTPConnection("rtbidder.impulse01.com",9000)
   conn.request("GET", "/poll")
   response = conn.getresponse()
-  data = json.loads(response.read())
-  FileList=data["FileList"]
+  try:
+    data = json.loads(response.read())
+    FileList=data["FileList"]    
+  except:
+    FileList=[]
   MessageList=[]
   for f in FileList:
     try:
-    conn.request("GET", "/getFile?file="+f)
-    response = conn.getresponse()
-    data = json.loads(response.read())
-    Messages=data["Messages"]
-    MessageList.extend(Messages)
+      conn.request("GET", "/getFile?file="+f)
+      response = conn.getresponse()
+      data = json.loads(response.read())
+      Messages=data["Messages"]
+      MessageList.extend(Messages)
+    except:
+      print "exception in filelist loop"
 
   queryList=[]
   for item in MessageList:
@@ -73,7 +78,6 @@ def pollAdServer():
       query = "INSERT INTO `logs`.`logsnew` (`impressionId`, `campaignId`, `bannerId`, `exchange`, `domain`, `carrier`, `device`, `userAgent`, `state`, `city`, `country`, `bid`, `price`, `date`, `time`, `impressionCount`) VALUES ('"+item["impressionId"]+"', '"+str(item["campaignId"])+"', '"+str(item["bannerId"])+"', '"+item["exchange"]+"', '"+item["domain"]+"', '"+item["isp"]+"', NULL, NULL, '"+item["state"]+"', '"+item["city"]+"', '"+item["country"]+"', '"+str(item["bid"])+"', '"+str(price)+"', '"+date+"', '"+time+"', '"+str(item["impressionCount"])+"') ON DUPLICATE KEY UPDATE campaignId='"+str(item["campaignId"])+"', bannerId='"+str(item["bannerId"])+"', exchange='"+item["exchange"]+"', domain='"+item["domain"]+"', carrier='"+item["isp"]+"', device=NULL, userAgent=NULL, state='"+item["state"]+"', city='"+item["city"]+"', country='"+item["country"]+"', bid='"+str(item["bid"])+"', price='"+str(price)+"', date='"+date+"', time='"+time+"', impressionCount='"+str(item["impressionCount"])+"';"
       queryList.append(query)
 
-    try:
       if item["message"]=="CLICK":
 	query = "INSERT INTO `logs`.`logsnew` (`impressionId`,`clicked`) VALUES ('"+item["impressionId"]+"', '1') ON DUPLICATE KEY UPDATE clicked=1"
 	queryList.append(query)
@@ -89,8 +93,7 @@ def pollAdServer():
       if item["message"]=="GOOGLEMATCH":
 	query = "INSERT INTO `audience`.`matchtable` (`impulseId`,`google_gid`) VALUES ('"+item["imp_uid"]+"', '"+item["google_gid"]+"') ON DUPLICATE KEY UPDATE google_gid='"+item["google_gid"]+"'"
 	queryList.append(query)
-    except:
-      print "exception in BBlock",sys.exc_info()
+
     
   con = MySQLdb.connect('localhost', 'root', 'appyfizz', 'impulsedb',compress=1,cursorclass=MySQLdb.cursors.DictCursor);
   cur = con.cursor()
@@ -105,4 +108,4 @@ if __name__ == "__main__":
   while(1):
     n = pollAdServer()
     print "fetched records"+str(n)
-    time.sleep(1000)
+    time.sleep(1)
