@@ -93,7 +93,7 @@ def pollAdServer():
   con.commit()
   
 if __name__ == "__main__":
-  while(true):
+  while(1):
     pollAdServer()
     time.sleep(1000)
     
