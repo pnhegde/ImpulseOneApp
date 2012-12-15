@@ -71,3 +71,4 @@ con = MySQLdb.connect('localhost', 'root', 'appyfizz', 'impulsedb',compress=1,cu
 cur = con.cursor()
 for query in queryList:
   cur.execute(query)
+  print query
