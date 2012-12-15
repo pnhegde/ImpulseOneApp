@@ -91,9 +91,11 @@ def pollAdServer():
     cur.execute(query)
     print query
   con.commit()
+  return len(queryList)  
   
 if __name__ == "__main__":
+  print "starting poll loop"
   while(1):
-    pollAdServer()
+    n = pollAdServer()
+    print "fetched records"+str(n)
     time.sleep(1000)
-    
