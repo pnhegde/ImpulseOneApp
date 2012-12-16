@@ -37,7 +37,7 @@ def pollAdServer():
       t=item["timestamp_GMT"].split(" ")
       date=t[0]
       time=t[1]
-      if item["city"]=None
+      if item["city"]==None
 	item["city"]="Undetected"
       
       try:
