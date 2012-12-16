@@ -37,6 +37,8 @@ def pollAdServer():
       t=item["timestamp_GMT"].split(" ")
       date=t[0]
       time=t[1]
+      if item["city"]=None
+	item["city"]="Undetected"
       
       try:
 	if item["exchange"]=="google":
@@ -74,6 +76,7 @@ def pollAdServer():
 	
       if item["exchange"]=="direct":
 	price = item["price"]
+	
 
     try:
       query = "INSERT INTO `logs`.`logsnew` (`impressionId`, `campaignId`, `bannerId`, `exchange`, `domain`, `carrier`, `device`, `userAgent`, `state`, `city`, `country`, `bid`, `price`, `date`, `time`, `impressionCount`) VALUES ('"+item["impressionId"]+"', '"+str(item["campaignId"])+"', '"+str(item["bannerId"])+"', '"+item["exchange"]+"', '"+item["domain"]+"', '"+item["isp"]+"', NULL, NULL, '"+item["state"]+"', '"+item["city"]+"', '"+item["country"]+"', '"+str(item["bid"])+"', '"+str(price)+"', '"+date+"', '"+time+"', '"+str(item["impressionCount"])+"') ON DUPLICATE KEY UPDATE campaignId='"+str(item["campaignId"])+"', bannerId='"+str(item["bannerId"])+"', exchange='"+item["exchange"]+"', domain='"+item["domain"]+"', carrier='"+item["isp"]+"', device=NULL, userAgent=NULL, state='"+item["state"]+"', city='"+item["city"]+"', country='"+item["country"]+"', bid='"+str(item["bid"])+"', price='"+str(price)+"', date='"+date+"', time='"+time+"', impressionCount='"+str(item["impressionCount"])+"';"
