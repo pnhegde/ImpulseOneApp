@@ -79,6 +79,7 @@ def pollAdServer():
       query = "INSERT INTO `logs`.`logsnew` (`impressionId`, `campaignId`, `bannerId`, `exchange`, `domain`, `carrier`, `device`, `userAgent`, `state`, `city`, `country`, `bid`, `price`, `date`, `time`, `impressionCount`) VALUES ('"+item["impressionId"]+"', '"+str(item["campaignId"])+"', '"+str(item["bannerId"])+"', '"+item["exchange"]+"', '"+item["domain"]+"', '"+item["isp"]+"', NULL, NULL, '"+item["state"]+"', '"+item["city"]+"', '"+item["country"]+"', '"+str(item["bid"])+"', '"+str(price)+"', '"+date+"', '"+time+"', '"+str(item["impressionCount"])+"') ON DUPLICATE KEY UPDATE campaignId='"+str(item["campaignId"])+"', bannerId='"+str(item["bannerId"])+"', exchange='"+item["exchange"]+"', domain='"+item["domain"]+"', carrier='"+item["isp"]+"', device=NULL, userAgent=NULL, state='"+item["state"]+"', city='"+item["city"]+"', country='"+item["country"]+"', bid='"+str(item["bid"])+"', price='"+str(price)+"', date='"+date+"', time='"+time+"', impressionCount='"+str(item["impressionCount"])+"';"
       queryList.append(query)
     except:
+      print "Exception here"
       print item
 
     try:
@@ -104,8 +105,10 @@ def pollAdServer():
   con = MySQLdb.connect('localhost', 'root', 'appyfizz', 'impulsedb',compress=1,cursorclass=MySQLdb.cursors.DictCursor);
   cur = con.cursor()
   for query in queryList:
-    cur.execute(query)
-    print query
+    try:
+      cur.execute(query)
+    except:
+      print query
   con.commit()
   return len(queryList)  
   
