@@ -33,7 +33,6 @@ def pollAdServer():
   queryList=[]
   for item in MessageList:
     item=json.loads(item)
-    item["isp"]=item["isp"].strip("'")    
     if item["message"]=="IMP":
       t=item["timestamp_GMT"].split(" ")
       date=t[0]
@@ -44,11 +43,7 @@ def pollAdServer():
 	if item["isp"]==None:
 	  item["isp"]="Undetected"
 	else:
-	  item["isp"]=item["isp"].replace("'","")
-      except:	   
-        print "isp exception"
-        item["isp"]="Undetected"
-      
+	  item["isp"]=item["isp"].replace("'","")      
 	  
       try:
 	if item["exchange"]=="google":
