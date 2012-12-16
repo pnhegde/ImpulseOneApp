@@ -11,10 +11,10 @@ import binascii
 import time
 
 def pollAdServer():
-  conn = httplib.HTTPConnection("rtbidder.impulse01.com",9000)
-  conn.request("GET", "/poll")
-  response = conn.getresponse()
   try:
+    conn = httplib.HTTPConnection("rtbidder.impulse01.com",9000)
+    conn.request("GET", "/poll")
+    response = conn.getresponse()
     data = json.loads(response.read())
     FileList=data["FileList"]    
   except:
