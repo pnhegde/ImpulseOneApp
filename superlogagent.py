@@ -40,11 +40,16 @@ def pollAdServer():
       time=t[1]
       if item["city"]==None:
 	item["city"]="Undetected"
-      if item["isp"]==None:
-	item["isp"]="Undetected"
-      else:
-	item["isp"]=item["isp"].replace("'","")
-	
+      try:
+	if item["isp"]==None:
+	  item["isp"]="Undetected"
+	else:
+	  item["isp"]=item["isp"].replace("'","")
+      except:	   
+        print "isp exception"
+        item["isp"]="Undetected"
+      
+	  
       try:
 	if item["exchange"]=="google":
 	  price = item["price"]
