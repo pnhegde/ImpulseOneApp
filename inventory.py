@@ -16,6 +16,7 @@ sock.bind((UDP_IP, UDP_PORT))
 while True:
     data, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
     data=json.loads(data)
+    print "got a forecast"
     if data['messageType']=="Forecast":
       e = data['message']["e"]
       d = data['message']["d"]
