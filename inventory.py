@@ -31,7 +31,7 @@ while True:
 	  cur = con.cursor()
 	  cur.execute("SELECT * FROM inventory WHERE domain='"+d+"' AND channel='"+c+"' AND exchange='"+e+"' AND country='"+geo+"' AND size='"+size+"'")
 	  if int(cur.rowcount)==0:
-	    cur.execute("INSERT INTO `impulsedb`.`inventory` (`sourceId`, `domain`, `channel`, `exchange`, `category`, `country`, `size`, `averageDailyImpressions`, `todayImpressions`,`averageCpm`, `manuallyVerified`) 		  VALUES (NULL, '"+d+"', '"+c+"', '"+e+"', '1', '"+geo+"', '"+size+"', '', '"+str(i)+"', '', '', '', '', '');")
+	    cur.execute("INSERT INTO `impulsedb`.`inventory` (`sourceId`, `domain`, `channel`, `exchange`, `category`, `country`, `size`, `averageDailyImpressions`, `todayImpressions`,`averageCpm`, `manuallyVerified`) 		  VALUES (NULL, '"+d+"', '"+c+"', '"+e+"', '1', '"+geo+"', '"+size+"', '', '"+str(i)+"', '', 'N');")
 	  else:
 	    row = cur.fetchone()
 	    recordId=row[0]
