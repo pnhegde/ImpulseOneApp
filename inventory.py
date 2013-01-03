@@ -6,6 +6,7 @@ import thread
 import MySQLdb
 import json
 from collections import defaultdict
+import sys
 
 #This thread handles all the UDP messages coming on port 5006 and handles them
 print "starting udp server on port 5006. Listening to inventory forecasts"
