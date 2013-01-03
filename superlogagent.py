@@ -42,7 +42,9 @@ def pollAdServer():
       if item["isp"]==None:
 	item["isp"]="Undetected"
       else:
-	item["isp"]=item["isp"].replace("'","")      
+	item["isp"]=item["isp"].replace("'","")
+
+	
 	  
       try:
 	if item["exchange"]=="google":

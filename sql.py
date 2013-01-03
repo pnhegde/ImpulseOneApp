@@ -205,7 +205,6 @@ for row in rows:
     print "exception4"
     
     
-    
 query = "SELECT campaignId, date, domain, HOUR(time) as hour, COUNT(*) AS impressions, SUM(clicked) AS clicks, SUM(clickConversion) AS clickconversions, SUM(viewConversion) AS viewconversions, (SUM(price)/1000) AS spend FROM logsnew WHERE DATE(date)=DATE(NOW()) OR DATE(date)=UNIX_TIMESTAMP(subdate(current_date, 1)) GROUP BY campaignId, date, domain, HOUR(time)"
 cur.execute(query)
 rows=cur.fetchall()
@@ -253,9 +252,6 @@ for row in rows:
     queryList.append(query)    
   except:
     print "exception6"
-
-    
-    
     
 print "Executing Queries"
 for query in queryList:

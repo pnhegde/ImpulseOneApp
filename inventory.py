@@ -17,6 +17,7 @@ while True:
     data, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
     data=json.loads(data)
     print "got a forecast"
+    print data
     if data['messageType']=="Forecast":
       e = data['message']["e"]
       d = data['message']["d"]
@@ -25,7 +26,7 @@ while True:
       size = data['message']["size"]
       i = data['message']["i"]
       try:
-	  con = MySQLdb.connect('localhost', 'retarget_root', 'root', 'impulsedb');
+	  con = MySQLdb.connect('localhost', 'root', 'appyfizz', 'impulsedb');
 	  cur = con.cursor()
 	  cur.execute("SELECT * FROM inventory WHERE domain='"+d+"' AND channel='"+c+"' AND exchange='"+e+"' AND country='"+geo+"' AND size='"+size+"'")
 	  if int(cur.rowcount)==0:
