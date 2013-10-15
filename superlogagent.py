@@ -76,6 +76,10 @@ def pollAdServer():
 	  l = [bin(ord(a) ^ ord(b)) for a,b in zip(ciphertext,pad)]
 	  k = int("".join("%02x" % int(x,0) for x in l), 16)
 	  price = float(k)/float(1000);
+
+	if item["exchange"]=="pubmatic":
+	  price = item["price"]
+	  
       except:
 	price=float(0)
 	print "exception decoding price"
