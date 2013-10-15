@@ -124,8 +124,8 @@ class MainHandler(tornado.web.RequestHandler):
 	  cur.execute("SELECT * FROM accounts WHERE accountId IN (SELECT accountId FROM advertisers WHERE advertiserId IN (SELECT advertiserId FROM brands WHERE brandId IN (SELECT brandId FROM plans WHERE planId IN (SELECT planId FROM campaigns WHERE campaignId='"+str(campaignId)+"'))))")
 	  res = cur.fetchall()
 	  res1 = res[0]
-	  advertiserName = res1['accountName']
-	  invertedIndex['display:campaign:'+str(campaignId)+':advertiserName']=advertiserName	  
+	  invertedIndex['display:campaign:'+str(campaignId)+':advertiserName']=res1['accountName']
+	  invertedIndex['display:campaign:'+str(campaignId)+':advertiserId']=res1['accountId']	  	  
 
 	  if int(row['channel'])==2:
 	    if 'video:campaigns' in invertedIndex.keys():
